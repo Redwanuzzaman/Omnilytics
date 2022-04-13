@@ -46,7 +46,7 @@ $( document ).ready(function() {
     });
     $('#report').click(function(e){
         e.preventDefault();
-        $.get('/challenge/get_report', function(resp){
+        $.get('/get_report', function(resp){
             var data = ``;
             data += `<p>Alphabatical String: ${resp.alpha}</p><p>Real Numbers String: ${resp.real}</p><p>Integers: ${resp.digit}</p><p>Alphanumerics: ${resp.alphanum}</p>`
             $('#report_content').html(data);
