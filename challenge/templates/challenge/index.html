@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omnilytics</title>
+    <link rel='stylesheet' href=''>
+</head>
+<body>
+{% block content %}
+    <div style="margin: 50px 50px 50px 50px">
+        <button id="generate">GENERATE</button>
+    </div>
+    <div style="display: none; margin: 50px 50px 50px 50px" id="download">
+        <a href="{% url 'download_file' %}">Download File</a>
+    </div>
+    <div style="margin: 50px 50px 50px 50px">
+    <button id="report">REPORT</button>
+    </div>
+    <div id="report_content" style="margin: 50px 50px 50px 50px">
+
+    </div>
+    <div style="margin: 50px 50px 50px 50px">
+    <button id="reset">RESET</button>
+    </div>
+{% endblock content %}
+
+<script src="/static/js/jquery-3.6.0.min.js"></script>
+<script>
+$( document ).ready(function() {
+    $('#generate').click(function(e){
+        e.preventDefault();
+        $.post('', {csrfmiddlewaretoken: '{{ csrf_token }}'}, function (resp) {
+            if(resp.status == 200){
+                $('#download').css('display', 'block');
+
+            }
+        }, 'json');
+    });
+
+    $('#reset').click(function (e) {
+        e.preventDefault();
+        $('#download').css('display', 'none');
+        $('#report_content').html('');
+    });
+    $('#report').click(function(e){
+        e.preventDefault();
+        $.get('/challenge/get_report', function(resp){
+            var data = ``;
+            data += `<p>Alphabatical String: ${resp.alpha}</p><p>Real Numbers String: ${resp.real}</p><p>Integers: ${resp.digit}</p><p>Alphanumerics: ${resp.alphanum}</p>`
+            $('#report_content').html(data);
+        }, 'json')
+    })
+});
+</script>
+
+</body>
+</html>
+
+{% comment %} base.html {% endcomment %}
